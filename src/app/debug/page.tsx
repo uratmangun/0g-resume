@@ -33,7 +33,7 @@ export default function DebugPage() {
     if (isAccountPending) {
       return "Checking Para session...";
     }
-    return isConnected ? "Sign out of Para" : "Sign in with Para";
+    return isConnected ? "Sign out of Para" : "Sign in";
   })();
 
   const buttonClasses = [
@@ -89,7 +89,7 @@ export default function DebugPage() {
           ) : null}
           <ParaModal
             appName={appName}
-            oAuthMethods={[OAuthMethod.GOOGLE, OAuthMethod.DISCORD, OAuthMethod.TWITTER]}
+            oAuthMethods={[OAuthMethod.GOOGLE, OAuthMethod.APPLE]}
           />
         </header>
         {/* Intentionally left blank per request to remove all debug cards */}
