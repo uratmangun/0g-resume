@@ -170,17 +170,9 @@ jobs:
           FARCASTER_CUSTODY_ADDRESS: ${{ secrets.FARCASTER_CUSTODY_ADDRESS }}
           FARCASTER_CUSTODY_PRIVATE_KEY: ${{ secrets.FARCASTER_CUSTODY_PRIVATE_KEY }}
           NEXT_PUBLIC_APP_DOMAIN: https://${{ steps.generate-vercel-project.outputs.project_name }}.vercel.app
-          # App Metadata
-          FARCASTER_APP_NAME: ${{ secrets.FARCASTER_APP_NAME }}
-          FARCASTER_APP_BUTTON_TITLE: ${{ secrets.FARCASTER_APP_BUTTON_TITLE }}
-          FARCASTER_APP_DESCRIPTION: ${{ secrets.FARCASTER_APP_DESCRIPTION }}
-          FARCASTER_SPLASH_BACKGROUND_COLOR: ${{ secrets.FARCASTER_SPLASH_BACKGROUND_COLOR }}
           # API Keys
           TOGETHER_API_KEY: ${{ secrets.TOGETHER_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          # Optional Configuration
-          FARCASTER_WEBHOOK_SECRET: ${{ secrets.FARCASTER_WEBHOOK_SECRET }}
-          FLUX_GENERATION_DELAY: ${{ secrets.FLUX_GENERATION_DELAY }}
         run: |
           echo "🚢 Deploying temporary build to Vercel for screenshot generation..."
           
@@ -259,36 +251,16 @@ jobs:
         run: |
             echo "🔧 Generating Farcaster account association for domain: $NEXT_PUBLIC_APP_DOMAIN"
             node scripts/generate-farcaster-account-association.js generate
-      - name: "🎨 Generate AI icon"
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          BROWSERLESS_API_URL: ${{ secrets.BROWSERLESS_API_URL }}
+      - name: "🎨 Generate SVG icons with gradients"
         run: |
-          # Export domain URLs for icon generation
+          # Export domain URLs for SVG icon generation
           PRODUCTION_DOMAIN="${{ steps.deploy-temp.outputs.production_domain }}"
           export SCREENSHOT_URL="https://${PRODUCTION_DOMAIN}"
           export NEXT_PUBLIC_APP_DOMAIN="$PRODUCTION_DOMAIN"
           
-          echo "🎨 Generating AI icon using Flux API"
+          echo "🎨 Generating SVG icons with gradient colors"
           echo "Using production domain: $PRODUCTION_DOMAIN"
-          node scripts/generate-icon-with-fallback.js
-
-      - name: "📸 Generate screenshots"
-        env:
-          BROWSERLESS_API_URL: ${{ secrets.BROWSERLESS_API_URL }}
-        run: |
-          # Use the actual production domain from the temporary deployment step
-          PRODUCTION_DOMAIN="${{ steps.deploy-temp.outputs.production_domain }}"
-          PRODUCTION_URL="https://${PRODUCTION_DOMAIN}"
-          
-          echo "📸 Generating screenshots from production domain: $PRODUCTION_DOMAIN"
-          echo "Using production URL: $PRODUCTION_URL"
-          
-          # Export for the script
-          export SCREENSHOT_URL="$PRODUCTION_URL"
-          export NEXT_PUBLIC_APP_DOMAIN="$PRODUCTION_DOMAIN"
-          
-          node scripts/generate-screenshots.js
+          node scripts/generate-svg-icons-with-gradient.js
 
 
       - name: "🏗️ Build application"
@@ -300,14 +272,9 @@ jobs:
           FARCASTER_FID: ${{ secrets.FARCASTER_FID }}
           FARCASTER_CUSTODY_ADDRESS: ${{ secrets.FARCASTER_CUSTODY_ADDRESS }}
           FARCASTER_CUSTODY_PRIVATE_KEY: ${{ secrets.FARCASTER_CUSTODY_PRIVATE_KEY }}
-          FARCASTER_APP_NAME: ${{ secrets.FARCASTER_APP_NAME }}
-          FARCASTER_APP_BUTTON_TITLE: ${{ secrets.FARCASTER_APP_BUTTON_TITLE }}
-          FARCASTER_APP_DESCRIPTION: ${{ secrets.FARCASTER_APP_DESCRIPTION }}
-          FARCASTER_SPLASH_BACKGROUND_COLOR: ${{ secrets.FARCASTER_SPLASH_BACKGROUND_COLOR }}
           TOGETHER_API_KEY: ${{ secrets.TOGETHER_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          FARCASTER_WEBHOOK_SECRET: ${{ secrets.FARCASTER_WEBHOOK_SECRET }}
-          FLUX_GENERATION_DELAY: ${{ secrets.FLUX_GENERATION_DELAY }}
+          
 
       - name: "🚀 Deploy to Vercel (Production)"
         if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
@@ -319,17 +286,11 @@ jobs:
           FARCASTER_CUSTODY_ADDRESS: ${{ secrets.FARCASTER_CUSTODY_ADDRESS }}
           FARCASTER_CUSTODY_PRIVATE_KEY: ${{ secrets.FARCASTER_CUSTODY_PRIVATE_KEY }}
           APP_DOMAIN: https://${{ steps.generate-vercel-project.outputs.project_name }}.vercel.app
-          # App Metadata
-          FARCASTER_APP_NAME: ${{ secrets.FARCASTER_APP_NAME }}
-          FARCASTER_APP_BUTTON_TITLE: ${{ secrets.FARCASTER_APP_BUTTON_TITLE }}
-          FARCASTER_APP_DESCRIPTION: ${{ secrets.FARCASTER_APP_DESCRIPTION }}
-          FARCASTER_SPLASH_BACKGROUND_COLOR: ${{ secrets.FARCASTER_SPLASH_BACKGROUND_COLOR }}
+         
           # API Keys
           TOGETHER_API_KEY: ${{ secrets.TOGETHER_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          # Optional Configuration
-          FARCASTER_WEBHOOK_SECRET: ${{ secrets.FARCASTER_WEBHOOK_SECRET }}
-          FLUX_GENERATION_DELAY: ${{ secrets.FLUX_GENERATION_DELAY }}
+          
         run: |
           echo "Deploying to Vercel Production..."
           
@@ -413,17 +374,9 @@ jobs:
           FARCASTER_CUSTODY_ADDRESS: ${{ secrets.FARCASTER_CUSTODY_ADDRESS }}
           FARCASTER_CUSTODY_PRIVATE_KEY: ${{ secrets.FARCASTER_CUSTODY_PRIVATE_KEY }}
           APP_DOMAIN: https://${{ steps.generate-vercel-project.outputs.project_name }}.vercel.app
-          # App Metadata
-          FARCASTER_APP_NAME: ${{ secrets.FARCASTER_APP_NAME }}
-          FARCASTER_APP_BUTTON_TITLE: ${{ secrets.FARCASTER_APP_BUTTON_TITLE }}
-          FARCASTER_APP_DESCRIPTION: ${{ secrets.FARCASTER_APP_DESCRIPTION }}
-          FARCASTER_SPLASH_BACKGROUND_COLOR: ${{ secrets.FARCASTER_SPLASH_BACKGROUND_COLOR }}
           # API Keys
           TOGETHER_API_KEY: ${{ secrets.TOGETHER_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          # Optional Configuration
-          FARCASTER_WEBHOOK_SECRET: ${{ secrets.FARCASTER_WEBHOOK_SECRET }}
-          FLUX_GENERATION_DELAY: ${{ secrets.FLUX_GENERATION_DELAY }}
         run: |
           echo "Deploying to Vercel Preview..."
           

@@ -1,5 +1,5 @@
 ---
-description: Automatically stages changes, generates a conventional commit message with appropriate emoji, and pushes to remote
+description: Automatically stages changes, generates a conventional commit message with appropriate emoji, pushes to remote, and creates pull requests
 ---
 
 You are a Git automation assistant that will stage changes, create a commit, and push to remote.
